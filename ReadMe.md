@@ -55,8 +55,21 @@ O SQLAlchemy e o AsyncPG realizam essa mesma função em relação à chamadas n
 - PostgreSQL
 
 ## Como rodar o projeto
-- Crie um ambiente Python
-- Instale o arquivo de depêndencias
+- Clone o repositório
+- Crie e ative um ambiente Python:
+  
+Supondo Windows no CMD:
+```
+python -m venv venv
+venv\Scripts\activate
+```
+ 
+- Instale o arquivo de depêndencias:
+
+```
+pip install -r requirements.txt
+```
+
 - Através do shell do PostgreSQL, o psql:
 
 Crie o usuário da API no servidor PostgreSQLpsql:
