@@ -115,6 +115,7 @@ SQLAlchemy é um tooklit SQL e ORM que lida com a comunicação com o banco, e A
 Passlib foi usado para criar o hash da senha do admin e verificar ela no login. Python-JOSE é responsável por criar o JWT e validá-lo.
 
 `cachetools`
+
 Cachetools foi utilizada para criar um cache dos pedidos feitos à API externa da FakeStoreAPI. Ao invés de realizar múltiplas chamadas para pegar dados do mesmo produto, a response da API externa é salva internamente, podendo ser acessada por outros requests feitos à API que precisam do mesmo produto. É um cache do tipo TTLCache (Time To Live Cache), e ele tem um tempo configurável de 1 hora para manter os dados. Após esse período, ele fará o request externo quando for pedido tal produto.
 
 `pydantic-settings`
