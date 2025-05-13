@@ -86,7 +86,7 @@ favorite_products_password
 Execute o script de criação do banco de dados, tabelas e relações:
 
 <details>
-<summary>Script PostgreSQL (Clique para abrir)</summary>
+<summary>🗒️ Script PostgreSQL (Clique para abrir)</summary>
   
 ```
 CREATE ROLE favorite_products_admin WITH LOGIN PASSWORD 'favorite_products_password';
