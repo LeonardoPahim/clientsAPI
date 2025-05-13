@@ -129,20 +129,7 @@ CREATE TABLE IF NOT EXISTS client_favorite_products (
 
 </details>
 
-- Por terminal, dentro do projeto:
-
-Crie a migração inicial para criar as tabelas no banco de dados.
-
-```
-alembic revision --autogenerate -m "create_initial_tables"
-```
-
-Execute a migração:
-
-```
-alembic upgrade head
-```
-**Caso tenha algum problema na geração, o endereço de conexão do banco de dados está no arquivo .env.**
+**Caso tenha algum problema na conexão, o endereço de conexão do banco de dados está no arquivo .env.**
 ```
 DATABASE_URL = "postgresql+asyncpg://favorite_products_admin:favorite_products_password@localhost:5432/fav_prd_db"
 ```
