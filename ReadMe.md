@@ -78,11 +78,56 @@ Crie o usuário da API no servidor PostgreSQLpsql:
 CREATE ROLE favorite_products_admin WITH LOGIN PASSWORD 'favorite_products_password';
 ```
 
-Crie o banco de dados com o dano sendo o usuário da API:
+Logue no PSQL com o usuário novo:
+```
+\c fav_prd_db favorite_products_admin localhost 5432
+favorite_products_password
+```
+Execute o script de criação do banco de dados, tabelas e relações:
+
+<details>
+<summary>Script PostgreSQL (Clique para abrir)</summary>
+  
+```
+CREATE ROLE favorite_products_admin WITH LOGIN PASSWORD 'favorite_products_password';
+
+CREATE DATABASE fav_prd_db
+    OWNER = favorite_products_admin
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'en_US.UTF-8' -- Or your preferred locale
+    LC_CTYPE = 'en_US.UTF-8'   -- Or your preferred locale
+    TEMPLATE = template0;
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+CREATE TABLE IF NOT EXISTS products_ref (
+    id INTEGER PRIMARY KEY
+);
+
+CREATE INDEX IF NOT EXISTS ix_products_ref_id ON products_ref (id);
+
+CREATE TABLE IF NOT EXISTS clients (
+    -- Use gen_random_uuid() from pgcrypto, or uuid_generate_v4() from uuid-ossp
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR NOT NULL,
+    email VARCHAR UNIQUE NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS ix_clients_id ON clients (id);
+CREATE INDEX IF NOT EXISTS ix_clients_name ON clients (name);
+CREATE INDEX IF NOT EXISTS ix_clients_email ON clients (email);
+
+CREATE TABLE IF NOT EXISTS client_favorite_products (
+    client_id UUID NOT NULL,
+    product_ref_id INTEGER NOT NULL,
+    PRIMARY KEY (client_id, product_ref_id),
+    -- Define foreign key constraints
+    CONSTRAINT fk_client FOREIGN KEY(client_id) REFERENCES clients(id) ON DELETE CASCADE,
+    CONSTRAINT fk_product_ref FOREIGN KEY(product_ref_id) REFERENCES products_ref(id) ON DELETE CASCADE
+);
 
 ```
-CREATE DATABASE fav_prd_db OWNER favorite_products_admin ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' TEMPLATE = template0;
-```
+
+</details>
 
 - Por terminal, dentro do projeto:
 
