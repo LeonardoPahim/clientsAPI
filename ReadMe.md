@@ -167,9 +167,8 @@ FastAPI é o pacote principal da aplicação, é responsável por lidar a estrut
 `sqlalchemy[asyncio]`
 `asyncpg`
 `psycopg2-binary`
-`alembic`
 
-SQLAlchemy é um tooklit SQL e ORM que lida com a comunicação com o banco, e Alembic lida com migrações, e nesse caso, criação das tabelas inicias do projeto. Visando a escalabilidade e performance, utilizei o asyncio do SQLAlchemy e o Asyncpg para lidar de maneira assíncrona com os acessos ao banco de dados, impedindo que a API tenha que ficar esperando a resposta do banco de dados, sem poder processar demais requests. Psycopg2-binary é necessária para o Alembic.
+SQLAlchemy é um tooklit SQL e ORM que lida com a comunicação com o banco. Visando a escalabilidade e performance, utilizei o asyncio do SQLAlchemy e o Asyncpg para lidar de maneira assíncrona com os acessos ao banco de dados, impedindo que a API tenha que ficar esperando a resposta do banco de dados, sem poder processar demais requests.
 
 `passlib[bcrypt]`
 `python-jose[criptography]`
