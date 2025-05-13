@@ -23,15 +23,13 @@ As rotas relacionadas ao clientes permitem adicionar, atualizar, deletar e obter
 
 As rotas relacionadas aos produtos favoritos permitem adicionar um produto na lista de favoritos de um cliente, deletar um produto da lista e obter a lista de produtos favoritos de um cliente, a partir de seu UUID.
 
-O projeto possui 4 tabelas, que devem ser geradas pela migração do *alembic* antes da execução do projeto.
+O projeto possui 3 tabelas, que são gerados pelo script incluso no guia abaixo.
 
 A tabela *clients* armazena o nome e email dos clientes e indexada por seu UUID.
 
 A tabela *products_ref* serve como uma tabela de referência armazenando o ID númerico de produtos que fazem parte de pelo menos uma lista de favoritos. Assim é possível evitar dados duplicados, ao contrário seria armazenado toda a informação do produto várias vezes para cada cliente que o favoritou. Quando necessário os dados, para listar os favoritos por exemplo, é realizada uma chamada para a FakeStoreAPI pedindo pelo produto referente ao ID. Foi implementado um cache para que essa chamada não fosse realizada fora das vezes necessárias.
 
 A tabela *client_favorite_products* é essencialmente a lista de produtos favoritos dos clientes, ligando o UUID do cliente com o ID numérico do produto.
-
-A tabela *alembic_version* é criada e utilizada pelo pacote de migrações.
 
 ## Escolhas de performance e escalabilidade
 
@@ -94,8 +92,8 @@ CREATE ROLE favorite_products_admin WITH LOGIN PASSWORD 'favorite_products_passw
 CREATE DATABASE fav_prd_db
     OWNER = favorite_products_admin
     ENCODING = 'UTF8'
-    LC_COLLATE = 'en_US.UTF-8' -- Or your preferred locale
-    LC_CTYPE = 'en_US.UTF-8'   -- Or your preferred locale
+    LC_COLLATE = 'en_US.UTF-8'
+    LC_CTYPE = 'en_US.UTF-8'
     TEMPLATE = template0;
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
@@ -106,7 +104,6 @@ CREATE TABLE IF NOT EXISTS products_ref (
 CREATE INDEX IF NOT EXISTS ix_products_ref_id ON products_ref (id);
 
 CREATE TABLE IF NOT EXISTS clients (
-    -- Use gen_random_uuid() from pgcrypto, or uuid_generate_v4() from uuid-ossp
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR NOT NULL,
     email VARCHAR UNIQUE NOT NULL
@@ -120,7 +117,6 @@ CREATE TABLE IF NOT EXISTS client_favorite_products (
     client_id UUID NOT NULL,
     product_ref_id INTEGER NOT NULL,
     PRIMARY KEY (client_id, product_ref_id),
-    -- Define foreign key constraints
     CONSTRAINT fk_client FOREIGN KEY(client_id) REFERENCES clients(id) ON DELETE CASCADE,
     CONSTRAINT fk_product_ref FOREIGN KEY(product_ref_id) REFERENCES products_ref(id) ON DELETE CASCADE
 );
